@@ -3,16 +3,23 @@
   "version": "1.0.0",
   "description": "Bible Study Management",
   "main": "index.js",
+  "engines": {
+    "node": "10.16.3"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cross-env NODE_ENV=production npm run createLanguagesTable && cross-env NODE_ENV=production npm run createUsersTable && cross-env NODE_ENV=production npm run createBooksTable && cross-env NODE_ENV=production npm run createPastorsTable && cross-env NODE_ENV=production npm run createChurchesTable && cross-env NODE_ENV=production npm run createCommand && cross-env NODE_ENV=production node --require babel-core/register --require babel-polyfill ./src/server.js",
+    "start": "cross-env NODE_ENV=production npm run createOtherBooksRequestTable && cross-env NODE_ENV=production npm run createOtherBooksTable && cross-env NODE_ENV=production npm run createTimeTable && cross-env NODE_ENV=production npm run createLanguagesTable && cross-env NODE_ENV=production npm run createUsersTable && cross-env NODE_ENV=production npm run createBooksTable && cross-env NODE_ENV=production npm run createPastorsTable && cross-env NODE_ENV=production npm run createChurchesTable && cross-env NODE_ENV=production npm run createCommand && cross-env NODE_ENV=production node --require babel-core/register --require babel-polyfill ./src/server.js",
+    "start:prod": "cross-env NODE_ENV=production node --require babel-core/register --require babel-polyfill ./src/server.js",
     "dev": "cross-env NODE_ENV=development nodemon --require babel-core/register --require babel-polyfill ./src/server.js",
     "createBooksTable": "node --require babel-core/register --require babel-polyfill ./src/database/index.js createBooksTable",
     "createCommand": "node --require babel-core/register --require babel-polyfill ./src/database/index.js createCommandTable",
     "createPastorsTable": "node --require babel-core/register --require babel-polyfill ./src/database/index.js createPastorsTable",
     "createChurchesTable": "node --require babel-core/register --require babel-polyfill ./src/database/index.js createChurchesTable",
     "createUsersTable": "node --require babel-core/register --require babel-polyfill ./src/database/index.js createUsersTable",
-    "createLanguagesTable": "node --require babel-core/register --require babel-polyfill ./src/database/index.js createLanguagesTable"
+    "createLanguagesTable": "node --require babel-core/register --require babel-polyfill ./src/database/index.js createLanguagesTable",
+    "createTimeTable": "node --require babel-core/register --require babel-polyfill ./src/database/index.js createTimeTable",
+    "createOtherBooksTable": "node --require babel-core/register --require babel-polyfill ./src/database/index.js createOtherBooksTable",
+    "createOtherBooksRequestTable": "node --require babel-core/register --require babel-polyfill ./src/database/index.js createOtherBooksRequestTable"
   },
   "author": "",
   "license": "ISC",
@@ -22,13 +29,19 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cloudinary": "^1.21.0",
+    "compression": "^1.7.4",
     "cors": "^2.8.5",
     "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-fileupload": "^1.1.7-alpha.3",
+    "helmet": "^3.22.0",
     "jsonwebtoken": "^8.5.1",
     "make-runnable": "^1.3.6",
-    "pg": "^8.0.2"
+    "pg": "^8.0.2",
+    "read-excel-file": "^4.0.6"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

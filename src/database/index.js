@@ -1,6 +1,6 @@
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
-import { booksTable, createCommand, pastorsTable, churchesTable, usersTable, languagesTable } from './queries';
+import { booksTable, createCommand, pastorsTable, churchesTable, usersTable, languagesTable, timeTable, otherBooks, otherBooksRequest} from './queries';
 
 dotenv.config();
 
@@ -57,6 +57,30 @@ const createUsersTable = async () => {
   }
 };
 
+const createTimeTable = async () => {
+  try {
+    await pool.query(timeTable);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const createOtherBooksTable = async () => {
+  try {
+    await pool.query(otherBooks);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const createOtherBooksRequestTable = async () => {
+  try {
+    await pool.query(otherBooksRequest);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 pool.on('remove', () => {
   console.log('Connection terminated');
   process.exit(0);
@@ -69,6 +93,9 @@ module.exports = {
   createChurchesTable,
   createUsersTable,
   createLanguagesTable,
+  createTimeTable,
+  createOtherBooksTable,
+  createOtherBooksRequestTable,
 };
 
 require('make-runnable');
