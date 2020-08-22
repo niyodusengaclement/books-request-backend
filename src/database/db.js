@@ -3,9 +3,14 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const connectionString = process.env.NODE_ENV === 'production' ? process.env.DB_URL_PROD : process.env.DB_URL_DEV;
-
-const pool = new Pool({ connectionString });
+const connectionString = process.env.DB_URL_DEV;
+const options = {
+  connectionString: process.env.DB_URL_PROD,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+}
+const pool = new Pool(process.env.NODE_ENV === 'production' ? options : { connectionString });
 export default {
   query(text, params) {
     try {

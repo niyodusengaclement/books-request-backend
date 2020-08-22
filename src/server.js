@@ -9,13 +9,30 @@ import router from './routes';
 
 env.config();
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || '0.0.0.0';
 
+const whitelist = ['https://sda-publishing.netlify.app', 'http://localhost:3000']
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(null, false)
+    }
+  },
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  preflightContinue: true,
+  maxAge: 600,
+}
+
+app.options('*', cors(corsOptions));
+app.use(cors(corsOptions));
 app.use(helmet());
 app.use(compression());
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true }));
-app.use(cors());
 app.use(fileupload({
   createParentPath: true,
   useTempFiles: true,
@@ -42,4 +59,4 @@ app.use((error, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {});
+app.listen(PORT, HOST, () => {});

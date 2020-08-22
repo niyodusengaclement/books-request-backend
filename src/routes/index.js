@@ -19,8 +19,9 @@ router.get('/requests', userAuth.checkToken, GeneralController.findAllRequests);
 router.get('/requests/:id', userAuth.checkToken, GeneralController.findSingleRequest);
 router.get('/churches', userAuth.checkToken, GeneralController.findAllChurches);
 router.get('/dashboard', userAuth.checkToken, GeneralController.dashboard);
-router.post('/timetable', userAuth.checkToken, GeneralController.startAndDeadline)
-router.get('/timetable', userAuth.checkToken, GeneralController.checkDeadline);
+router.route('/timetable')
+  .post(userAuth.checkToken, GeneralController.startAndDeadline)
+  .get(userAuth.checkToken, GeneralController.checkDeadline)
 router.get('/years', userAuth.checkToken, GeneralController.findYears);
 router.patch('/update/:id', userAuth.checkToken, GeneralController.updateSingleRequest);
 router.patch('/deliver/:id', userAuth.checkToken, GeneralController.deliverBooks);
