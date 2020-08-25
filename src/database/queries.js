@@ -91,7 +91,9 @@ timetable (id SERIAL NOT NULL,
       startDate timestamp NOT NULL,
       endDate timestamp NOT NULL,
       PRIMARY KEY (term, year)
-      );`;
+      );
+      
+      INSERT INTO timetable (term, year, startDate, endDate) values (1, 1890, '1890-05-10', '1890-05-10')`;
 
 const otherBooks = `DROP TABLE IF EXISTS otherbooks CASCADE; CREATE TABLE IF NOT EXISTS
 otherbooks (bookid SERIAL PRIMARY KEY,

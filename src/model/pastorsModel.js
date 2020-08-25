@@ -191,7 +191,7 @@ class PastorsModel {
   async checkTimetable() {
     const text = `SELECT * FROM timetable`;
     const { rows } = await db.query(text);
-    return rows[0];
+    return rows;
   }
 
   async PastorOtherBooksRequests(pastor_id) {

@@ -289,7 +289,7 @@ export default class GeneralController {
       if(isExist) return onError(res, 409, 'Timetable of this Quarter already exists');
       const result = await pastorsModel.createTimetable(values);
       if(result) return onSuccess(res, 201, 'Timetable created', result);
-
+      return onError(res, 500, 'Something went wrong, try aoin please');
     } catch (err) {
       return onError(res, 500, 'Internal Server Error');
     }
@@ -298,8 +298,8 @@ export default class GeneralController {
   static async checkDeadline(req, res) {
     try {
       const result = await pastorsModel.checkTimetable();
-      if(result) return onSuccess(res, 200, 'Timetable retrieved successfully', result)
-
+      if(result.length > 0) return onSuccess(res, 200, 'Timetable retrieved successfully', result[0]);
+      return onError(res, 404, 'No timetable found');
     } catch (err) {
       return onError(res, 500, 'Internal Server Error');
     }
