@@ -13,6 +13,7 @@ export const validateCommand = (data) => {
   const curr_year = year.getFullYear();
 
   const schema = Joi.object({
+    id_code: Joi.string().required(),
     category: Joi.string().required(),
     command: Joi.object().required().min(1),
     church: Joi.number().required().min(1),
