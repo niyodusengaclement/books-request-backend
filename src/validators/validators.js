@@ -15,6 +15,7 @@ export const validateCommand = (data) => {
   const schema = Joi.object({
     id_code: Joi.string().required(),
     category: Joi.string().required(),
+    name: Joi.string().required(),
     command: Joi.object().required().min(1),
     church: Joi.number().required().min(1),
     year: Joi.number().required().min(curr_year).max(curr_year+1),

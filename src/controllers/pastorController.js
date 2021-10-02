@@ -117,7 +117,7 @@ export default class PastorController {
         const err = error.details[0].message.split('"').join("");
         return onError(res, 400, err);
       }
-      const { id_code, command, church, year, term, category } = req.body;
+      const { id_code, command, church, year, term, category, name } = req.body;
       const values = [id_code, church, category, year, term];
       // const isExist = await pastorsModel.commandIsExist(values);
       // if (isExist)
@@ -126,7 +126,7 @@ export default class PastorController {
       //     409,
       //     "The Request already exist. Update the Request instead"
       //   );
-      const body = [id_code, church, command, year, term, category];
+      const body = [id_code, church, command, year, term, category, name];
       const output = await pastorsModel.createCommand(body);
       if (output)
         return onSuccess(res, 201, "Request successfully sent", output);

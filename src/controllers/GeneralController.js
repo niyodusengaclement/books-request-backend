@@ -275,6 +275,7 @@ export default class GeneralController {
       }
       return onSuccess(res, 200, "Retrieved sussessfully", nbrs);
     } catch (err) {
+      console.log(err)
       return onError(res, 500, "Internal Server Error");
     }
   }

@@ -41,8 +41,8 @@ class PastorsModel {
   }
 
   async createCommand(values) {
-    const text = `INSERT INTO command (pastorid, churchid, command, year, term, category)
-    values ($1, $2, $3, $4, $5, $6) returning *`;
+    const text = `INSERT INTO command (pastorid, churchid, command, year, term, category, name)
+    values ($1, $2, $3, $4, $5, $6, $7) returning *`;
     const { rows } = await db.query(text, values);
     return rows[0];
   }
@@ -55,24 +55,24 @@ class PastorsModel {
   }
 
   async commandPerChurch(church, year, term){
-    const { rows } = await db.query(`select pastor_name, church_name, (book->>'bookid')::integer as bookid, bookname, bookreader, booktype, languages.language, (book->>'number')::integer as nbr,((book->>'number')::integer * price) as price, year, term, time  from command, books, languages, pastors,churches, json_array_elements(command->'request') book where books.bookid = (book->>'bookid')::integer AND languages.languageid = books.language AND churches.church_id = command.churchid AND command.pastorid = pastors.login_code AND churchid = $1 AND year = $2 AND term = $3`, [church, year, term]);
+    const { rows } = await db.query(`select pastor_name, command.name, church_name, (book->>'bookid')::integer as bookid, bookname, bookreader, booktype, languages.language, (book->>'number')::integer as nbr,((book->>'number')::integer * price) as price, year, term, time  from command, books, languages, pastors,churches, json_array_elements(command->'request') book where books.bookid = (book->>'bookid')::integer AND languages.languageid = books.language AND churches.church_id = command.churchid AND command.pastorid = pastors.login_code AND churchid = $1 AND year = $2 AND term = $3`, [church, year, term]);
     return rows;
   }
 
   async commandPerPastor(pastor_code, year, term){
-    const { rows } = await db.query(`select pastor_name, church_name, (book->>'bookid')::integer as bookid, bookname, bookreader, booktype, languages.language, (book->>'number')::integer as nbr,((book->>'number')::integer * price) as price, year, term, time  from command, books, languages, pastors,churches, json_array_elements(command->'request') book where books.bookid = (book->>'bookid')::integer AND languages.languageid = books.language AND churches.church_id = command.churchid AND command.pastorid = pastors.login_code AND pastorid = $1 AND year = $2 AND term = $3`, [pastor_code, year, term]);
+    const { rows } = await db.query(`select pastor_name, command.name, church_name, (book->>'bookid')::integer as bookid, bookname, bookreader, booktype, languages.language, (book->>'number')::integer as nbr,((book->>'number')::integer * price) as price, year, term, time  from command, books, languages, pastors,churches, json_array_elements(command->'request') book where books.bookid = (book->>'bookid')::integer AND languages.languageid = books.language AND churches.church_id = command.churchid AND command.pastorid = pastors.login_code AND pastorid = $1 AND year = $2 AND term = $3`, [pastor_code, year, term]);
 
     return rows;
   }
 
   async findAllRequests() {
-    const { rows } = await db.query(`select pastor_name, field, zone, district, church_name, (book->>'bookid')::integer as bookid, bookname, bookreader, booktype, languages.language, (book->>'number')::integer as nbr,((book->>'number')::integer * price) as price, year, term, time  from command, books, languages, pastors,churches, json_array_elements(command->'request') book where books.bookid = (book->>'bookid')::integer AND languages.languageid = books.language AND churches.church_id = command.churchid AND command.pastorid = pastors.login_code`);
+    const { rows } = await db.query(`select pastor_name, command.name, field, zone, district, church_name, (book->>'bookid')::integer as bookid, bookname, bookreader, booktype, languages.language, (book->>'number')::integer as nbr,((book->>'number')::integer * price) as price, year, term, time  from command, books, languages, pastors,churches, json_array_elements(command->'request') book where books.bookid = (book->>'bookid')::integer AND languages.languageid = books.language AND churches.church_id = command.churchid AND command.pastorid = pastors.login_code`);
 
     return rows;
   }
 
   async findChurchRequests(pastor_code, year, term){
-    const { rows } = await db.query(`select id, churchid, bookid, bookname, bookreader, languages.language, booktype, SUM((book->>'number')::integer) AS nbr, sum(((book->>'number')::integer * price)) AS price from command, books, languages, json_array_elements(command->'request') book where books.bookid = (book->>'bookid')::integer AND books.language = languages.languageid AND command.pastorid = $1 AND year = $2 AND term = $3 GROUP BY id, churchid, bookid, bookname, bookreader, languages.language ORDER BY bookid ASC`, [pastor_code, year, term]);
+    const { rows } = await db.query(`select id, churchid, command.name, bookid, bookname, bookreader, languages.language, booktype, SUM((book->>'number')::integer) AS nbr, sum(((book->>'number')::integer * price)) AS price from command, books, languages, json_array_elements(command->'request') book where books.bookid = (book->>'bookid')::integer AND books.language = languages.languageid AND command.pastorid = $1 AND year = $2 AND term = $3 GROUP BY id, churchid, bookid, bookname, bookreader, languages.language ORDER BY bookid ASC`, [pastor_code, year, term]);
 
     return rows;
   }
